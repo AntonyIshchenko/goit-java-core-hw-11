@@ -36,3 +36,12 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### GoIT ###
+.idea
+.iws
+.iml
+.ipr
+out
+target
+.DS_STORE /src/main/resources/log
