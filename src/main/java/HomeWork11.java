@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class HomeWork11 {
-    static List<String> NAMES = List.of("Anton", "Andriy", "Boris", "Maksym", "Vlad", "Ruslan", "Mykola", "Igor");
+    private static final List<String> NAMES = List.of("Anton", "Andriy", "Boris", "Maksym", "Vlad", "Ruslan", "Mykola", "Igor");
 
     public static void main(String[] args) {
 
@@ -43,8 +43,7 @@ public class HomeWork11 {
         AtomicInteger countFilter = new AtomicInteger(1);
         AtomicInteger countMap = new AtomicInteger(1);
 
-        return list
-                .stream()
+        return list.stream()
                 .filter(item -> countFilter.getAndIncrement() % 2 == remainder)
                 .map(item -> {
                     String newName = countMap.get() + ". " + item;
@@ -57,11 +56,9 @@ public class HomeWork11 {
 
     // TASK 2
     public static List<String> upperCaseAndSortList(List<String> list, boolean descending){
-        return list
-                .stream().
-                map(String::toUpperCase)
+        return list.stream()
+                .map(String::toUpperCase)
                 .sorted(descending ? Comparator.reverseOrder() : Comparator.naturalOrder())
-
                 .collect(Collectors.toList());
     }
 
@@ -76,22 +73,16 @@ public class HomeWork11 {
 
     // TASK 4
     public static Stream<Long> getLinearCongruentGenerator(long a, long c, long m){
-        Randomizer random = new Randomizer(25214903917L, 11L , 1L << 48);
+        Randomizer random = new Randomizer(a, c , m);
         return  Stream.iterate(37L, seed -> random.start(seed).next());
     }
 
     // TASK 5
     public static <T> Stream<T> zip(Stream<T> first, Stream<T> second){
-        List<T> resultList = new ArrayList<>();
-
         Iterator<T> iteratorA = first.iterator();
         Iterator<T> iteratorB = second.iterator();
 
-        while (iteratorA.hasNext() && iteratorB.hasNext()) {
-            resultList.add(iteratorA.next());
-            resultList.add(iteratorB.next());
-        }
-
-        return resultList.stream();
+        return Stream.iterate(0, i -> iteratorA.hasNext() && iteratorB.hasNext(), i -> i + 1)
+                .flatMap(i -> Stream.of(iteratorA.next(), iteratorB.next()));
     }
 }
